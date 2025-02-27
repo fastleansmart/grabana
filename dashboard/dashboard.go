@@ -8,7 +8,15 @@ import (
 	"encoding/json"
 
 	"github.com/K-Phoen/grabana/alert"
+	"github.com/K-Phoen/grabana/gauge"
+	"github.com/K-Phoen/grabana/heatmap"
+	"github.com/K-Phoen/grabana/logs"
 	"github.com/K-Phoen/grabana/row"
+	"github.com/K-Phoen/grabana/singlestat"
+	"github.com/K-Phoen/grabana/stat"
+	"github.com/K-Phoen/grabana/table"
+	textPanel "github.com/K-Phoen/grabana/text"
+	"github.com/K-Phoen/grabana/timeseries"
 	"github.com/K-Phoen/grabana/variable/constant"
 	"github.com/K-Phoen/grabana/variable/custom"
 	"github.com/K-Phoen/grabana/variable/datasource"
@@ -347,6 +355,127 @@ func Time(from, to string) Option {
 func Timezone(timezone TimezoneOption) Option {
 	return func(builder *Builder) error {
 		builder.board.Timezone = string(timezone)
+
+		return nil
+	}
+}
+
+// WithTimeSeries adds a "timeseries" panel in the dashboard.
+func WithTimeSeries(title string, options ...timeseries.Option) Option {
+	return func(dashboard *Builder) error {
+		panel, err := timeseries.New(title, options...)
+		if err != nil {
+			return err
+		}
+
+		dashboard.Internal().Panels = append(dashboard.Internal().Panels, panel.Builder)
+
+		if panel.Alert == nil {
+			return nil
+		}
+
+		if panel.Builder.Datasource != nil {
+			panel.Alert.Datasource = panel.Builder.Datasource.LegacyName
+		}
+
+		return nil
+	}
+}
+
+// WithGauge adds a "gauge" panel in the dashboard.
+func WithGauge(title string, options ...gauge.Option) Option {
+	return func(dashboard *Builder) error {
+		panel, err := gauge.New(title, options...)
+		if err != nil {
+			return err
+		}
+
+		dashboard.Internal().Panels = append(dashboard.Internal().Panels, panel.Builder)
+
+		return nil
+	}
+}
+
+// WithLogs adds a "logs" panel in the dashboard.
+func WithLogs(title string, options ...logs.Option) Option {
+	return func(dashboard *Builder) error {
+		panel, err := logs.New(title, options...)
+		if err != nil {
+			return err
+		}
+
+		dashboard.Internal().Panels = append(dashboard.Internal().Panels, panel.Builder)
+
+		return nil
+	}
+}
+
+// WithSingleStat adds a "single stat" panel in the dashboard.
+// Deprecated: use WithStat() instead
+func WithSingleStat(title string, options ...singlestat.Option) Option {
+	return func(dashboard *Builder) error {
+		panel, err := singlestat.New(title, options...)
+		if err != nil {
+			return err
+		}
+
+		dashboard.Internal().Panels = append(dashboard.Internal().Panels, panel.Builder)
+
+		return nil
+	}
+}
+
+// WithStat adds a "stat" panel in the dashboard.
+func WithStat(title string, options ...stat.Option) Option {
+	return func(dashboard *Builder) error {
+		panel, err := stat.New(title, options...)
+		if err != nil {
+			return err
+		}
+
+		dashboard.Internal().Panels = append(dashboard.Internal().Panels, panel.Builder)
+
+		return nil
+	}
+}
+
+// WithTable adds a "table" panel in the dashboard.
+func WithTable(title string, options ...table.Option) Option {
+	return func(dashboard *Builder) error {
+		panel, err := table.New(title, options...)
+		if err != nil {
+			return err
+		}
+
+		dashboard.Internal().Panels = append(dashboard.Internal().Panels, panel.Builder)
+
+		return nil
+	}
+}
+
+// WithText adds a "text" panel in the dashboard.
+func WithText(title string, options ...textPanel.Option) Option {
+	return func(dashboard *Builder) error {
+		panel, err := textPanel.New(title, options...)
+		if err != nil {
+			return err
+		}
+
+		dashboard.Internal().Panels = append(dashboard.Internal().Panels, panel.Builder)
+
+		return nil
+	}
+}
+
+// WithHeatmap adds a "heatmap" panel in the dashboard.
+func WithHeatmap(title string, options ...heatmap.Option) Option {
+	return func(dashboard *Builder) error {
+		panel, err := heatmap.New(title, options...)
+		if err != nil {
+			return err
+		}
+
+		dashboard.Internal().Panels = append(dashboard.Internal().Panels, panel.Builder)
 
 		return nil
 	}
