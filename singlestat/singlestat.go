@@ -1,6 +1,7 @@
 package singlestat
 
 import (
+	"encoding/json"
 	"fmt"
 	"strings"
 
@@ -475,6 +476,15 @@ func Repeat(repeat string) Option {
 func RepeatDirection(direction sdk.RepeatDirection) Option {
 	return func(singleStat *SingleStat) error {
 		singleStat.Builder.RepeatDirection = &direction
+
+		return nil
+	}
+}
+
+// Transformation adds a single transformation to the graph. Currently only supports raw JSON.
+func Transformation(transformation json.RawMessage) Option {
+	return func(singleStat *SingleStat) error {
+		singleStat.Builder.Transformations = append(singleStat.Builder.Transformations, transformation)
 
 		return nil
 	}

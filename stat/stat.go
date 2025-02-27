@@ -1,6 +1,7 @@
 package stat
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/K-Phoen/grabana/errors"
@@ -456,6 +457,15 @@ func ColorScheme(options ...scheme.Option) Option {
 func NoValue(text string) Option {
 	return func(stat *Stat) error {
 		stat.Builder.StatPanel.FieldConfig.Defaults.NoValue = text
+
+		return nil
+	}
+}
+
+// Transformation adds a single transformation to the graph. Currently only supports raw JSON.
+func Transformation(transformation json.RawMessage) Option {
+	return func(stat *Stat) error {
+		stat.Builder.Transformations = append(stat.Builder.Transformations, transformation)
 
 		return nil
 	}

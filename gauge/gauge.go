@@ -1,6 +1,7 @@
 package gauge
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/K-Phoen/grabana/errors"
@@ -379,6 +380,15 @@ func NoValue(text string) Option {
 func Orientation(mode OrientationMode) Option {
 	return func(gauge *Gauge) error {
 		gauge.Builder.GaugePanel.Options.Orientation = string(mode)
+
+		return nil
+	}
+}
+
+// Transformation adds a single transformation to the graph. Currently only supports raw JSON.
+func Transformation(transformation json.RawMessage) Option {
+	return func(gauge *Gauge) error {
+		gauge.Builder.Transformations = append(gauge.Builder.Transformations, transformation)
 
 		return nil
 	}

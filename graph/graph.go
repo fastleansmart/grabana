@@ -1,6 +1,7 @@
 package graph
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/K-Phoen/grabana/alert"
@@ -428,6 +429,15 @@ func Legend(opts ...LegendOption) Option {
 		}
 
 		graph.Builder.GraphPanel.Legend = legend
+
+		return nil
+	}
+}
+
+// Transformation adds a single transformation to the graph. Currently only supports raw JSON.
+func Transformation(transformation json.RawMessage) Option {
+	return func(graph *Graph) error {
+		graph.Builder.Transformations = append(graph.Builder.Transformations, transformation)
 
 		return nil
 	}

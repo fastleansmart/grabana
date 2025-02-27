@@ -1,6 +1,7 @@
 package table
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/K-Phoen/grabana/errors"
@@ -254,6 +255,15 @@ func Description(content string) Option {
 func Transparent() Option {
 	return func(table *Table) error {
 		table.Builder.Transparent = true
+
+		return nil
+	}
+}
+
+// Transformation adds a single transformation to the graph. Currently only supports raw JSON.
+func Transformation(transformation json.RawMessage) Option {
+	return func(table *Table) error {
+		table.Builder.Transformations = append(table.Builder.Transformations, transformation)
 
 		return nil
 	}
