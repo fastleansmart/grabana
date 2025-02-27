@@ -1,6 +1,7 @@
 package heatmap
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/K-Phoen/grabana/errors"
@@ -350,6 +351,15 @@ func Repeat(repeat string) Option {
 func RepeatDirection(direction sdk.RepeatDirection) Option {
 	return func(heatmap *Heatmap) error {
 		heatmap.Builder.RepeatDirection = &direction
+
+		return nil
+	}
+}
+
+// Transformation adds a single transformation to the graph. Currently only supports raw JSON.
+func Transformation(transformation json.RawMessage) Option {
+	return func(heatmap *Heatmap) error {
+		heatmap.Builder.Transformations = append(heatmap.Builder.Transformations, transformation)
 
 		return nil
 	}

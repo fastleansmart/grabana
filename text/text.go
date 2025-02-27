@@ -1,6 +1,7 @@
 package text
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/K-Phoen/grabana/errors"
@@ -101,6 +102,15 @@ func Description(content string) Option {
 func Transparent() Option {
 	return func(text *Text) error {
 		text.Builder.Transparent = true
+
+		return nil
+	}
+}
+
+// Transformation adds a single transformation to the graph. Currently only supports raw JSON.
+func Transformation(transformation json.RawMessage) Option {
+	return func(text *Text) error {
+		text.Builder.Transformations = append(text.Builder.Transformations, transformation)
 
 		return nil
 	}

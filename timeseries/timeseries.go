@@ -1,6 +1,7 @@
 package timeseries
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/K-Phoen/grabana/alert"
@@ -446,6 +447,15 @@ func FieldOverride(m fields.Matcher, opts ...fields.OverrideOption) Option {
 		}
 
 		timeseries.Builder.TimeseriesPanel.FieldConfig.Overrides = append(timeseries.Builder.TimeseriesPanel.FieldConfig.Overrides, override)
+
+		return nil
+	}
+}
+
+// Transformation adds a single transformation to the graph. Currently only supports raw JSON.
+func Transformation(transformation json.RawMessage) Option {
+	return func(timeseries *TimeSeries) error {
+		timeseries.Builder.Transformations = append(timeseries.Builder.Transformations, transformation)
 
 		return nil
 	}

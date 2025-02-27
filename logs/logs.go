@@ -1,6 +1,7 @@
 package logs
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/K-Phoen/grabana/errors"
@@ -224,6 +225,15 @@ func Order(order SortOrder) Option {
 func Deduplication(dedup DedupStrategy) Option {
 	return func(logs *Logs) error {
 		logs.Builder.LogsPanel.Options.DedupStrategy = string(dedup)
+
+		return nil
+	}
+}
+
+// Transformation adds a single transformation to the graph. Currently only supports raw JSON.
+func Transformation(transformation json.RawMessage) Option {
+	return func(logs *Logs) error {
+		logs.Builder.Transformations = append(logs.Builder.Transformations, transformation)
 
 		return nil
 	}
