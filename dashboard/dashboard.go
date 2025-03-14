@@ -35,6 +35,25 @@ type TagAnnotation struct {
 	Tags       []string `yaml:",flow"`
 }
 
+// PrometheusAnnotation describes an annotation with a Prometheus query.
+type PromAnnotation struct {
+	Name          string
+	PrometheusUID string
+	Color         string
+	Expression    string
+	Enable        bool
+	Step          string
+	Filter        AnnotationFilter
+	Hide          bool
+	Text          string
+	Title         string
+}
+
+type AnnotationFilter struct {
+	Exclude bool
+	Ids     []uint
+}
+
 // Option represents an option that can be used to configure a
 // dashboard.
 type Option func(dashboard *Builder) error
@@ -271,7 +290,7 @@ func Row(title string, options ...row.Option) Option {
 	}
 }
 
-// TagsAnnotation adds a new source of annotation for the dashboard.
+// TagsAnnotation adds a new source of annotation that filters by tags for the dashboard.
 func TagsAnnotation(annotation TagAnnotation) Option {
 	return func(builder *Builder) error {
 		builder.board.Annotations.List = append(builder.board.Annotations.List, sdk.Annotation{
@@ -283,6 +302,25 @@ func TagsAnnotation(annotation TagAnnotation) Option {
 			Type:       "tags",
 		})
 
+		return nil
+	}
+}
+
+// Annotation adds a new source of annotation that uses a Prometheus query for the dashboard.
+func PrometheusAnnotation(annotation PromAnnotation) Option {
+	return func(builder *Builder) error {
+		builder.board.Annotations.List = append(builder.board.Annotations.List, sdk.Annotation{
+			Name:        annotation.Name,
+			Datasource:  &sdk.DatasourceRef{Type: "prometheus", UID: annotation.PrometheusUID},
+			Expr:        annotation.Expression,
+			IconColor:   annotation.Color,
+			Enable:      annotation.Enable,
+			Step:        annotation.Step,
+			Filter:      sdk.AnnotationFilter{Exclude: annotation.Filter.Exclude, Ids: annotation.Filter.Ids},
+			Hide:        annotation.Hide,
+			TextFormat:  annotation.Text,
+			TitleFormat: annotation.Title,
+		})
 		return nil
 	}
 }

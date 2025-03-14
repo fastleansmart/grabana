@@ -2,7 +2,7 @@ module github.com/K-Phoen/grabana
 
 go 1.19
 
-replace github.com/K-Phoen/sdk v0.12.4 => github.com/fastleansmart/grafana-sdk v0.14.1
+replace github.com/K-Phoen/sdk v0.12.4 => github.com/fastleansmart/grafana-sdk v0.14.7
 
 require (
 	github.com/K-Phoen/jennifer v0.0.0-20230811102814-e6c78cf40086
