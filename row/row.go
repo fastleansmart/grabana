@@ -19,13 +19,13 @@ type Option func(row *Row) error
 
 // Row represents a dashboard row.
 type Row struct {
-	builder *sdk.Row
+	Builder *sdk.Row
 	alerts  []*alert.Alert
 }
 
 // New creates a new row.
 func New(board *sdk.Board, title string, options ...Option) (*Row, error) {
-	panel := &Row{builder: board.AddRow(title)}
+	panel := &Row{Builder: board.AddRow(title)}
 
 	for _, opt := range append(defaults(), options...) {
 		if err := opt(panel); err != nil {
@@ -56,7 +56,7 @@ func WithGraph(title string, options ...graph.Option) Option {
 			return err
 		}
 
-		row.builder.Add(panel.Builder)
+		row.Builder.Add(panel.Builder)
 
 		if panel.Alert == nil {
 			return nil
@@ -80,7 +80,7 @@ func WithTimeSeries(title string, options ...timeseries.Option) Option {
 			return err
 		}
 
-		row.builder.Add(panel.Builder)
+		row.Builder.Add(panel.Builder)
 
 		if panel.Alert == nil {
 			return nil
@@ -104,7 +104,7 @@ func WithGauge(title string, options ...gauge.Option) Option {
 			return err
 		}
 
-		row.builder.Add(panel.Builder)
+		row.Builder.Add(panel.Builder)
 
 		return nil
 	}
@@ -118,7 +118,7 @@ func WithLogs(title string, options ...logs.Option) Option {
 			return err
 		}
 
-		row.builder.Add(panel.Builder)
+		row.Builder.Add(panel.Builder)
 
 		return nil
 	}
@@ -133,7 +133,7 @@ func WithSingleStat(title string, options ...singlestat.Option) Option {
 			return err
 		}
 
-		row.builder.Add(panel.Builder)
+		row.Builder.Add(panel.Builder)
 
 		return nil
 	}
@@ -147,7 +147,7 @@ func WithStat(title string, options ...stat.Option) Option {
 			return err
 		}
 
-		row.builder.Add(panel.Builder)
+		row.Builder.Add(panel.Builder)
 
 		return nil
 	}
@@ -161,7 +161,7 @@ func WithTable(title string, options ...table.Option) Option {
 			return err
 		}
 
-		row.builder.Add(panel.Builder)
+		row.Builder.Add(panel.Builder)
 
 		return nil
 	}
@@ -175,7 +175,7 @@ func WithText(title string, options ...text.Option) Option {
 			return err
 		}
 
-		row.builder.Add(panel.Builder)
+		row.Builder.Add(panel.Builder)
 
 		return nil
 	}
@@ -189,7 +189,7 @@ func WithHeatmap(title string, options ...heatmap.Option) Option {
 			return err
 		}
 
-		row.builder.Add(panel.Builder)
+		row.Builder.Add(panel.Builder)
 
 		return nil
 	}
@@ -198,7 +198,7 @@ func WithHeatmap(title string, options ...heatmap.Option) Option {
 // ShowTitle ensures that the title of the row will be displayed.
 func ShowTitle() Option {
 	return func(row *Row) error {
-		row.builder.ShowTitle = true
+		row.Builder.ShowTitle = true
 
 		return nil
 	}
@@ -207,7 +207,7 @@ func ShowTitle() Option {
 // HideTitle ensures that the title of the row will NOT be displayed.
 func HideTitle() Option {
 	return func(row *Row) error {
-		row.builder.ShowTitle = false
+		row.Builder.ShowTitle = false
 
 		return nil
 	}
@@ -216,7 +216,7 @@ func HideTitle() Option {
 // RepeatFor will repeat the row for all values of the given variable.
 func RepeatFor(variable string) Option {
 	return func(row *Row) error {
-		row.builder.Repeat = &variable
+		row.Builder.Repeat = &variable
 
 		return nil
 	}
@@ -225,7 +225,7 @@ func RepeatFor(variable string) Option {
 // Collapse makes the row collapsed by default.
 func Collapse() Option {
 	return func(row *Row) error {
-		row.builder.Collapse = true
+		row.Builder.Collapse = true
 
 		return nil
 	}

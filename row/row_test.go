@@ -17,8 +17,8 @@ func TestNewRowsCanBeCreated(t *testing.T) {
 	panel, err := New(board, "Some row")
 
 	req.NoError(err)
-	req.Equal("Some row", panel.builder.Title)
-	req.True(panel.builder.ShowTitle)
+	req.Equal("Some row", panel.Builder.Title)
+	req.True(panel.Builder.ShowTitle)
 }
 
 func TestRowsCanHaveHiddenTitle(t *testing.T) {
@@ -28,7 +28,7 @@ func TestRowsCanHaveHiddenTitle(t *testing.T) {
 	panel, err := New(board, "", HideTitle())
 
 	req.NoError(err)
-	req.False(panel.builder.ShowTitle)
+	req.False(panel.Builder.ShowTitle)
 }
 
 func TestRowsCanHaveVisibleTitle(t *testing.T) {
@@ -38,7 +38,7 @@ func TestRowsCanHaveVisibleTitle(t *testing.T) {
 	panel, err := New(board, "", ShowTitle())
 
 	req.NoError(err)
-	req.True(panel.builder.ShowTitle)
+	req.True(panel.Builder.ShowTitle)
 }
 
 func TestRowsCanHaveGraphs(t *testing.T) {
@@ -48,7 +48,7 @@ func TestRowsCanHaveGraphs(t *testing.T) {
 	panel, err := New(board, "", WithGraph("HTTP Rate"))
 
 	req.NoError(err)
-	req.Len(panel.builder.Panels, 1)
+	req.Len(panel.Builder.Panels, 1)
 }
 
 func TestRowsCanHaveGraphsAndAlert(t *testing.T) {
@@ -73,7 +73,7 @@ func TestRowsCanHaveGraphsAndAlert(t *testing.T) {
 	)
 
 	req.NoError(err)
-	req.Len(panel.builder.Panels, 1)
+	req.Len(panel.Builder.Panels, 1)
 	req.Len(panel.Alerts(), 1)
 
 	req.Equal("Prometheus", panel.Alerts()[0].Datasource)
@@ -86,7 +86,7 @@ func TestRowsCanHaveTimeSeries(t *testing.T) {
 	panel, err := New(board, "", WithTimeSeries("HTTP Rate"))
 
 	req.NoError(err)
-	req.Len(panel.builder.Panels, 1)
+	req.Len(panel.Builder.Panels, 1)
 }
 
 func TestRowsCanHaveTimeSeriesAndAlert(t *testing.T) {
@@ -111,7 +111,7 @@ func TestRowsCanHaveTimeSeriesAndAlert(t *testing.T) {
 	)
 
 	req.NoError(err)
-	req.Len(panel.builder.Panels, 1)
+	req.Len(panel.Builder.Panels, 1)
 	req.Len(panel.Alerts(), 1)
 
 	req.Equal("Prometheus", panel.Alerts()[0].Datasource)
@@ -124,7 +124,7 @@ func TestRowsCanHaveTextPanels(t *testing.T) {
 	panel, err := New(board, "", WithText("HTTP Rate"))
 
 	req.NoError(err)
-	req.Len(panel.builder.Panels, 1)
+	req.Len(panel.Builder.Panels, 1)
 }
 
 func TestRowsCanHaveTablePanels(t *testing.T) {
@@ -134,7 +134,7 @@ func TestRowsCanHaveTablePanels(t *testing.T) {
 	panel, err := New(board, "", WithTable("Some table"))
 
 	req.NoError(err)
-	req.Len(panel.builder.Panels, 1)
+	req.Len(panel.Builder.Panels, 1)
 }
 
 func TestRowsCanHaveSingleStatPanels(t *testing.T) {
@@ -144,7 +144,7 @@ func TestRowsCanHaveSingleStatPanels(t *testing.T) {
 	panel, err := New(board, "", WithSingleStat("Some stat"))
 
 	req.NoError(err)
-	req.Len(panel.builder.Panels, 1)
+	req.Len(panel.Builder.Panels, 1)
 }
 
 func TestRowsCanHaveStatPanels(t *testing.T) {
@@ -154,7 +154,7 @@ func TestRowsCanHaveStatPanels(t *testing.T) {
 	panel, err := New(board, "", WithStat("Some stat"))
 
 	req.NoError(err)
-	req.Len(panel.builder.Panels, 1)
+	req.Len(panel.Builder.Panels, 1)
 }
 
 func TestRowsCanHaveHeatmapPanels(t *testing.T) {
@@ -164,7 +164,7 @@ func TestRowsCanHaveHeatmapPanels(t *testing.T) {
 	panel, err := New(board, "", WithHeatmap("Some heatmap"))
 
 	req.NoError(err)
-	req.Len(panel.builder.Panels, 1)
+	req.Len(panel.Builder.Panels, 1)
 }
 
 func TestRowsCanHaveLogsPanels(t *testing.T) {
@@ -174,7 +174,7 @@ func TestRowsCanHaveLogsPanels(t *testing.T) {
 	panel, err := New(board, "", WithLogs("Some logs"))
 
 	req.NoError(err)
-	req.Len(panel.builder.Panels, 1)
+	req.Len(panel.Builder.Panels, 1)
 }
 
 func TestRowsCanHaveGaugePanels(t *testing.T) {
@@ -184,7 +184,7 @@ func TestRowsCanHaveGaugePanels(t *testing.T) {
 	panel, err := New(board, "", WithGauge("Some gauge"))
 
 	req.NoError(err)
-	req.Len(panel.builder.Panels, 1)
+	req.Len(panel.Builder.Panels, 1)
 }
 
 func TestRowsCanHaveRepeatedPanels(t *testing.T) {
@@ -194,7 +194,7 @@ func TestRowsCanHaveRepeatedPanels(t *testing.T) {
 	panel, err := New(board, "", RepeatFor("repeated"))
 
 	req.NoError(err)
-	req.Equal("repeated", *panel.builder.Repeat)
+	req.Equal("repeated", *panel.Builder.Repeat)
 }
 
 func TestRowsCanBeCollapsedByDefault(t *testing.T) {
@@ -204,5 +204,5 @@ func TestRowsCanBeCollapsedByDefault(t *testing.T) {
 	panel, err := New(board, "", Collapse())
 
 	req.NoError(err)
-	req.True(panel.builder.Collapse)
+	req.True(panel.Builder.Collapse)
 }
